@@ -1,0 +1,94 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 筛选区 -->
+  <view class="filter-bar">
+    <view 
+      class="filter-tab {{currentFilter === 'limited' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-status="limited"
+    >限额</view>
+    <view 
+      class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-status="all"
+    >全部</view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-box" wx:if="{{loading}}">
+    <view class="loading-icon"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error-box" wx:elif="{{error}}">
+    <text class="error-text">{{error}}</text>
+    <view class="retry-btn" bindtap="fetchData">点击重试</view>
+  </view>
+
+  <!-- 数据表格 -->
+  <view class="table-container" wx:else>
+    <!-- 表头 -->
+    <view class="table-header">
+      <view class="col-fixed header-cell">名称</view>
+      <scroll-view class="scroll-header" scroll-x enable-flex>
+        <view class="scroll-row">
+          <view class="col-premium header-cell">溢价率</view>
+          <view class="col-status header-cell">状态</view>
+          <view class="col-price header-cell">现价</view>
+          <view class="col-change header-cell">涨幅</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 数据行 -->
+    <scroll-view 
+      class="table-body" 
+      scroll-y 
+      enhanced 
+      show-scrollbar="{{false}}"
+    >
+      <view 
+        class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+        wx:for="{{lofList}}" 
+        wx:key="code"
+      >
+        <!-- 固定列：名称/代码 -->
+        <view class="col-fixed">
+          <view class="fund-name">{{item.name}}</view>
+          <view class="fund-code">{{item.code}}</view>
+        </view>
+        
+        <!-- 滚动区域 -->
+        <scroll-view class="scroll-cols" scroll-x enable-flex>
+          <view class="scroll-row">
+            <!-- 溢价率 -->
+            <view class="col-premium {{item.premium_val >= 0 ? 'text-red' : 'text-green'}}">
+              {{item.premium_rate}}
+            </view>
+            <!-- 状态 -->
+            <view class="col-status">
+              <view 
+                class="status-tag {{item.status === 'limited' ? 'tag-limited' : (item.status === 'suspended' ? 'tag-suspended' : '')}}"
+                wx:if="{{item.status !== 'open'}}"
+              >
+                {{item.status === 'limited' ? '限额' : '暂停'}}
+              </view>
+            </view>
+            <!-- 现价 -->
+            <view class="col-price">{{item.price}}</view>
+            <!-- 涨幅 -->
+            <view class="col-change {{item.change_val >= 0 ? 'text-red' : 'text-green'}}">
+              {{item.change}}
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </scroll-view>
+
+    <!-- 更新时间 -->
+    <view class="update-time" wx:if="{{updateTime}}">
+      更新于 {{updateTime}}
+    </view>
+  </view>
+</view>

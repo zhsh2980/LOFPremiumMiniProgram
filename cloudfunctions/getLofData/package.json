@@ -1,0 +1,12 @@
+{
+    "name": "getlofdata",
+    "version": "1.0.0",
+    "description": "获取LOF溢价数据",
+    "main": "index.js",
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "wx-server-sdk": "~2.6.3",
+        "axios": "^1.6.0"
+    }
+}
