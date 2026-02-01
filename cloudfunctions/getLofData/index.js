@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
       headers: {
         'Authorization': `Bearer ${API_CONFIG.TOKEN}`
       },
-      timeout: 5000
+      timeout: 15000  // 增加到 15 秒，适应云函数网络延迟
     })
 
     if (response.data.code !== 0) {
