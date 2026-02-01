@@ -13,6 +13,22 @@ const API_CONFIG = {
   TOKEN: 'lofmonitor_b41528863f7bf431126e2afcb00042b7'
 }
 
+/**
+ * 清理基金名称，去除不必要的标签
+ */
+function cleanFundName(name) {
+  if (!name) return name
+
+  // 只去除交易标签：T+0、QD（保留 LOF）
+  let cleaned = name
+    .replace(/T\+0/gi, '')    // 去除 T+0
+    .replace(/QD/gi, '')      // 去除 QD
+    .replace(/\s+/g, ' ')     // 多个空格替换为一个
+    .trim()                   // 去除首尾空格
+
+  return cleaned
+}
+
 exports.main = async (event, context) => {
   const { status = 'limited', min_premium = 0 } = event
 
@@ -40,7 +56,7 @@ exports.main = async (event, context) => {
     // 2. 数据格式化（适配表格布局）
     const items = result.items.map(item => ({
       code: item.fund_code,
-      name: item.fund_name,
+      name: cleanFundName(item.fund_name), // 清理名称
       price: item.price !== null ? item.price.toFixed(3) : '--',
       // 溢价率：保留2位小数，带正负号
       premium_rate: item.premium_rate !== null
