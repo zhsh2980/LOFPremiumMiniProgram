@@ -8,9 +8,8 @@ cloud.init({
 
 // 配置信息
 const API_CONFIG = {
-  BASE_URL: 'http://154.8.205.159:8081',
-  // 开发阶段暂时硬编码 Token，上线前建议移至云函数环境变量
-  TOKEN: 'lofmonitor_b41528863f7bf431126e2afcb00042b7'
+  BASE_URL: process.env.LOF_API_URL || 'http://154.8.205.159:8081',
+  TOKEN: process.env.LOF_API_TOKEN || '' // 从云函数环境变量读取
 }
 
 /**
