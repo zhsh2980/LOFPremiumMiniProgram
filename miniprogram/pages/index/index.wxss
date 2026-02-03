@@ -164,11 +164,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: inherit;
+  background: #fff; /* 明确的白色背景 */
   box-shadow: 4rpx 0 8rpx rgba(0, 0, 0, 0.04);
-  z-index: 1;
+  z-index: 10; /* 提高层级 */
   position: sticky;
   left: 0;
+}
+
+/* 交替行的名称列背景色 */
+.table-row.row-alt .col-name {
+  background: #fafafa;
 }
 
 .fund-name {
