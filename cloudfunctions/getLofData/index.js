@@ -28,61 +28,165 @@ function cleanFundName(name) {
   return cleaned
 }
 
+/**
+ * 获取 LOF 套利数据
+ */
+async function getLofArbitrage(status) {
+  const response = await axios({
+    method: 'get',
+    url: `${API_CONFIG.BASE_URL}/api/lof/list`,
+    params: {
+      status: status === 'all' ? 'all' : 'limited',
+      min_premium: 0
+    },
+    headers: {
+      'Authorization': `Bearer ${API_CONFIG.TOKEN}`
+    },
+    timeout: 15000
+  })
+
+  if (response.data.code !== 0) {
+    throw new Error(response.data.message || 'API返回错误')
+  }
+
+  const result = response.data.data
+
+  // 格式化数据
+  const items = result.items.map(item => ({
+    code: item.fund_code,
+    name: cleanFundName(item.fund_name),
+    price: item.price !== null ? item.price.toFixed(3) : '--',
+    premium_rate: item.premium_rate !== null
+      ? (item.premium_rate > 0 ? '+' : '') + item.premium_rate.toFixed(2) + '%'
+      : '--',
+    change: item.change_pct !== null
+      ? (item.change_pct > 0 ? '+' : '') + item.change_pct.toFixed(2) + '%'
+      : '--',
+    status: item.apply_status,
+    limit: item.apply_limit || '',
+    amount: item.amount !== null ? item.amount : '--',
+    nav_date: item.nav_date || '--',
+    shares: item.shares !== null ? item.shares : '--',
+    shares_change: item.shares_change !== null ? item.shares_change : '--',
+    // 样式信息
+    styles: item.styles || {}
+  }))
+
+  return {
+    update_time: result.update_time,
+    items: items
+  }
+}
+
+/**
+ * 获取 QDII 商品数据
+ */
+async function getQdiiCommodity() {
+  const response = await axios({
+    method: 'get',
+    url: `${API_CONFIG.BASE_URL}/api/qdii/commodity`,
+    headers: {
+      'Authorization': `Bearer ${API_CONFIG.TOKEN}`
+    },
+    timeout: 15000
+  })
+
+  if (response.data.code !== 0) {
+    throw new Error(response.data.message || 'API返回错误')
+  }
+
+  const result = response.data.data
+
+  // 格式化数据 - QDII 商品
+  const items = result.items.map(item => ({
+    code: item.fund_code,
+    name: cleanFundName(item.fund_name),
+    price: item.price || '--',
+    change: item.change_pct || '--',
+    premium_rate_t1: item.premium_rate_t1 || '--',
+    rt_premium_rate: item.rt_premium_rate || '--',
+    status: item.apply_status || '--',
+    nav_date: item.nav_date || '--',
+    valuation_date: item.valuation_date || '--',
+    volume: item.volume || '--',
+    shares: item.shares || '--',
+    shares_change: item.shares_change || '--',
+    // 样式信息
+    styles: item.styles || {}
+  }))
+
+  return {
+    update_time: result.update_time,
+    items: items
+  }
+}
+
+/**
+ * 获取指数 LOF 数据
+ */
+async function getIndexLof() {
+  const response = await axios({
+    method: 'get',
+    url: `${API_CONFIG.BASE_URL}/api/lof/index`,
+    headers: {
+      'Authorization': `Bearer ${API_CONFIG.TOKEN}`
+    },
+    timeout: 15000
+  })
+
+  if (response.data.code !== 0) {
+    throw new Error(response.data.message || 'API返回错误')
+  }
+
+  const result = response.data.data
+
+  // 格式化数据 - 指数 LOF
+  const items = result.items.map(item => ({
+    code: item.fund_code,
+    name: cleanFundName(item.fund_name),
+    price: item.price || '--',
+    change: item.change_pct || '--',
+    premium_rate: item.premium_rate || '--',
+    index_change: item.index_change_pct || '--',
+    rt_valuation: item.rt_valuation || '--',
+    status: item.apply_status || '--',
+    nav: item.nav || '--',
+    nav_date: item.nav_date || '--',
+    volume: item.volume || '--',
+    shares: item.shares || '--',
+    shares_change: item.shares_change || '--',
+    // 样式信息
+    styles: item.styles || {}
+  }))
+
+  return {
+    update_time: result.update_time,
+    items: items
+  }
+}
+
 exports.main = async (event, context) => {
-  const { status = 'limited', min_premium = 0 } = event
+  const { type = 'lof', status = 'limited' } = event
 
   try {
-    // 1. 调用后端 API
-    const response = await axios({
-      method: 'get',
-      url: `${API_CONFIG.BASE_URL}/api/lof/list`,
-      params: {
-        status: status === 'all' ? 'all' : 'limited',
-        min_premium: min_premium
-      },
-      headers: {
-        'Authorization': `Bearer ${API_CONFIG.TOKEN}`
-      },
-      timeout: 15000  // 增加到 15 秒，适应云函数网络延迟
-    })
+    let data
 
-    if (response.data.code !== 0) {
-      throw new Error(response.data.message || 'API返回错误')
+    switch (type) {
+      case 'qdii':
+        data = await getQdiiCommodity()
+        break
+      case 'index':
+        data = await getIndexLof()
+        break
+      case 'lof':
+      default:
+        data = await getLofArbitrage(status)
+        break
     }
-
-    const result = response.data.data
-
-    // 2. 数据格式化（适配表格布局）
-    const items = result.items.map(item => ({
-      code: item.fund_code,
-      name: cleanFundName(item.fund_name), // 清理名称
-      price: item.price !== null ? item.price.toFixed(3) : '--',
-      // 溢价率：保留2位小数，带正负号
-      premium_rate: item.premium_rate !== null
-        ? (item.premium_rate > 0 ? '+' : '') + item.premium_rate.toFixed(2) + '%'
-        : '--',
-      premium_val: item.premium_rate, // 用于前端判断颜色
-      // 涨跌幅：保留2位小数，带正负号
-      change: item.change_pct !== null
-        ? (item.change_pct > 0 ? '+' : '') + item.change_pct.toFixed(2) + '%'
-        : '--',
-      change_val: item.change_pct, // 用于前端判断颜色
-      // 状态标签
-      status: item.apply_status,
-      limit: item.apply_limit || '', // 限额信息，如"限10"、"限100"
-      // 新增字段 - 保留原始数据
-      amount: item.amount !== null ? item.amount : '--', // 成交额
-      nav_date: item.nav_date || '--', // 净值日期
-      shares: item.shares !== null ? item.shares : '--', // 场内份额
-      shares_change: item.shares_change !== null ? item.shares_change : '--' // 场内新增（负数自动带-号）
-    }))
 
     return {
       success: true,
-      data: {
-        update_time: result.update_time,
-        items: items
-      }
+      data: data
     }
 
   } catch (err) {

@@ -94,7 +94,7 @@
 
 .fixed-body {
   flex: 1;
-  height: calc(100vh - 210rpx);
+  height: calc(100vh - 310rpx); /* 预留底部Tab空间 */
 }
 
 /* 左侧数据行 */
@@ -139,7 +139,7 @@
 
 .scroll-body {
   flex: 1;
-  height: calc(100vh - 210rpx);
+  height: calc(100vh - 310rpx); /* 预留底部Tab空间 */
   background: #fff;
 }
 
@@ -343,4 +343,44 @@
 
 .text-green {
   color: #52c41a;
+}
+
+/* 底部 Tab 栏 */
+.bottom-tabs {
+  display: flex;
+  height: 100rpx;
+  background: #fff;
+  border-top: 1rpx solid #e8e8e8;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.bottom-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.bottom-tab.active {
+  color: #1890ff;
+  font-weight: 600;
+}
+
+.bottom-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background: #1890ff;
+  border-radius: 2rpx;
 }

@@ -1,12 +1,13 @@
 <!--pages/index/index.wxml-->
 <view class="container">
-  <!-- 筛选区 -->
+  <!-- 顶部信息栏 -->
   <view class="filter-bar">
     <view class="update-info">
       <text class="update-label">更新于</text>
       <text class="update-value">{{updateTime || '--:--'}}</text>
     </view>
-    <view class="filter-tabs">
+    <!-- 只有 LOF 套利才显示筛选按钮 -->
+    <view class="filter-tabs" wx:if="{{currentTab === 'lof'}}">
       <view 
         class="filter-tab {{currentFilter === 'limited' ? 'active' : ''}}" 
         bindtap="onFilterChange" 
@@ -32,15 +33,13 @@
     <view class="retry-btn" bindtap="fetchData">点击重试</view>
   </view>
 
-  <!-- 数据表格 -->
-  <view class="table-container" wx:else>
+  <!-- LOF套利表格 -->
+  <view class="table-container" wx:elif="{{currentTab === 'lof'}}">
     <!-- 左侧固定列 -->
     <view class="fixed-left">
-      <!-- 表头 -->
       <view class="table-header">
         <view class="col-name">名称</view>
       </view>
-      <!-- 数据 -->
       <scroll-view 
         class="fixed-body" 
         scroll-y 
@@ -64,7 +63,6 @@
 
     <!-- 右侧可滚动列 -->
     <view class="scroll-right">
-      <!-- 表头 -->
       <scroll-view 
         class="table-header" 
         scroll-x 
@@ -83,7 +81,6 @@
           <view class="col-shares-change">新增(万元)</view>
         </view>
       </scroll-view>
-      <!-- 数据 -->
       <scroll-view 
         class="scroll-body" 
         scroll-y 
@@ -99,19 +96,14 @@
           wx:for="{{lofList}}" 
           wx:key="code"
         >
-          <view class="col-premium {{item.premium_val >= 0 ? 'text-red' : 'text-green'}}">
+          <view class="col-premium" style="color: {{item.styles.premium_rate.color || '#333'}}">
             {{item.premium_rate}}
           </view>
           <view class="col-status">
-            <view 
-              class="status-tag {{item.status === 'limited' ? 'tag-limited' : (item.status === 'suspended' ? 'tag-suspended' : '')}}"
-              wx:if="{{item.status !== 'open'}}"
-            >
-              {{item.status === 'limited' ? item.limit : '暂停'}}
-            </view>
+            <text style="color: {{item.styles.apply_status.color || '#333'}}">{{item.limit || item.status}}</text>
           </view>
           <view class="col-price">{{item.price}}</view>
-          <view class="col-change {{item.change_val >= 0 ? 'text-red' : 'text-green'}}">
+          <view class="col-change" style="color: {{item.styles.change_pct.color || '#333'}}">
             {{item.change}}
           </view>
           <view class="col-amount">{{item.amount}}</view>
@@ -121,5 +113,198 @@
         </view>
       </scroll-view>
     </view>
+  </view>
+
+  <!-- QDII表格 -->
+  <view class="table-container" wx:elif="{{currentTab === 'qdii'}}">
+    <view class="fixed-left">
+      <view class="table-header">
+        <view class="col-name">名称</view>
+      </view>
+      <scroll-view 
+        class="fixed-body" 
+        scroll-y 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        bindscroll="onLeftScroll"
+      >
+        <view 
+          class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+          wx:for="{{lofList}}" 
+          wx:key="code"
+        >
+          <view class="col-name">
+            <view class="fund-name">{{item.name}}</view>
+            <view class="fund-code">{{item.code}}</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="scroll-right">
+      <scroll-view 
+        class="table-header" 
+        scroll-x 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-left="{{scrollLeft}}"
+      >
+        <view class="header-content">
+          <view class="col-price">现价</view>
+          <view class="col-change">涨幅</view>
+          <view class="col-premium">T-1溢价</view>
+          <view class="col-premium">实时溢价</view>
+          <view class="col-status">申购状态</view>
+          <view class="col-nav-date">净值日期</view>
+          <view class="col-nav-date">估值日期</view>
+          <view class="col-amount">成交(万元)</view>
+          <view class="col-shares">份额</view>
+          <view class="col-shares-change">新增</view>
+        </view>
+      </scroll-view>
+      <scroll-view 
+        class="scroll-body" 
+        scroll-y 
+        scroll-x
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        scroll-left="{{scrollLeft}}"
+        bindscroll="onRightScroll"
+      >
+        <view 
+          class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+          wx:for="{{lofList}}" 
+          wx:key="code"
+        >
+          <view class="col-price">{{item.price}}</view>
+          <view class="col-change" style="color: {{item.styles.change_pct.color || '#333'}}">
+            {{item.change}}
+          </view>
+          <view class="col-premium" style="color: {{item.styles.premium_rate_t1.color || '#333'}}">
+            {{item.premium_rate_t1}}
+          </view>
+          <view class="col-premium" style="color: {{item.styles.rt_premium_rate.color || '#333'}}">
+            {{item.rt_premium_rate}}
+          </view>
+          <view class="col-status">
+            <text style="color: {{item.styles.apply_status.color || '#333'}}">{{item.status}}</text>
+          </view>
+          <view class="col-nav-date">{{item.nav_date}}</view>
+          <view class="col-nav-date">{{item.valuation_date}}</view>
+          <view class="col-amount">{{item.volume}}</view>
+          <view class="col-shares">{{item.shares}}</view>
+          <view class="col-shares-change">{{item.shares_change}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 指数LOF表格 -->
+  <view class="table-container" wx:elif="{{currentTab === 'index'}}">
+    <view class="fixed-left">
+      <view class="table-header">
+        <view class="col-name">名称</view>
+      </view>
+      <scroll-view 
+        class="fixed-body" 
+        scroll-y 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        bindscroll="onLeftScroll"
+      >
+        <view 
+          class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+          wx:for="{{lofList}}" 
+          wx:key="code"
+        >
+          <view class="col-name">
+            <view class="fund-name">{{item.name}}</view>
+            <view class="fund-code">{{item.code}}</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="scroll-right">
+      <scroll-view 
+        class="table-header" 
+        scroll-x 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-left="{{scrollLeft}}"
+      >
+        <view class="header-content">
+          <view class="col-price">现价</view>
+          <view class="col-change">涨幅</view>
+          <view class="col-premium">溢价率</view>
+          <view class="col-change">指数涨幅</view>
+          <view class="col-price">实时估值</view>
+          <view class="col-status">申购状态</view>
+          <view class="col-price">基金净值</view>
+          <view class="col-nav-date">净值日期</view>
+          <view class="col-amount">成交(万元)</view>
+          <view class="col-shares">份额</view>
+          <view class="col-shares-change">新增</view>
+        </view>
+      </scroll-view>
+      <scroll-view 
+        class="scroll-body" 
+        scroll-y 
+        scroll-x
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        scroll-left="{{scrollLeft}}"
+        bindscroll="onRightScroll"
+      >
+        <view 
+          class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+          wx:for="{{lofList}}" 
+          wx:key="code"
+        >
+          <view class="col-price">{{item.price}}</view>
+          <view class="col-change" style="color: {{item.styles.change_pct.color || '#333'}}">
+            {{item.change}}
+          </view>
+          <view class="col-premium" style="color: {{item.styles.premium_rate.color || '#333'}}">
+            {{item.premium_rate}}
+          </view>
+          <view class="col-change" style="color: {{item.styles.index_change_pct.color || '#333'}}">
+            {{item.index_change}}
+          </view>
+          <view class="col-price">{{item.rt_valuation}}</view>
+          <view class="col-status">
+            <text style="color: {{item.styles.apply_status.color || '#333'}}">{{item.status}}</text>
+          </view>
+          <view class="col-price">{{item.nav}}</view>
+          <view class="col-nav-date">{{item.nav_date}}</view>
+          <view class="col-amount">{{item.volume}}</view>
+          <view class="col-shares">{{item.shares}}</view>
+          <view class="col-shares-change">{{item.shares_change}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 底部 Tab 栏 -->
+  <view class="bottom-tabs">
+    <view 
+      class="bottom-tab {{currentTab === 'lof' ? 'active' : ''}}" 
+      bindtap="onTabChange" 
+      data-tab="lof"
+    >LOF套利</view>
+    <view 
+      class="bottom-tab {{currentTab === 'qdii' ? 'active' : ''}}" 
+      bindtap="onTabChange" 
+      data-tab="qdii"
+    >QDII</view>
+    <view 
+      class="bottom-tab {{currentTab === 'index' ? 'active' : ''}}" 
+      bindtap="onTabChange" 
+      data-tab="index"
+    >指数LOF</view>
   </view>
 </view>
