@@ -77,10 +77,10 @@
           <view class="col-status">状态</view>
           <view class="col-price">现价</view>
           <view class="col-change">涨幅</view>
-          <view class="col-amount">成交额</view>
+          <view class="col-amount">成交(万元)</view>
           <view class="col-nav-date">净值日期</view>
-          <view class="col-shares">场内份额</view>
-          <view class="col-shares-change">场内新增</view>
+          <view class="col-shares">份额(万元)</view>
+          <view class="col-shares-change">新增(万元)</view>
         </view>
       </scroll-view>
       <!-- 数据 -->

@@ -70,11 +70,11 @@ exports.main = async (event, context) => {
       // 状态标签
       status: item.apply_status,
       limit: item.apply_limit || '', // 限额信息，如"限10"、"限100"
-      // 新增字段
-      amount: item.amount !== null ? (item.amount / 10000).toFixed(2) + '万' : '--', // 成交额，转换为万元
+      // 新增字段 - 保留原始数据
+      amount: item.amount !== null ? item.amount : '--', // 成交额
       nav_date: item.nav_date || '--', // 净值日期
-      shares: item.shares !== null ? (item.shares / 10000).toFixed(2) + '万' : '--', // 场内份额，转换为万份
-      shares_change: item.shares_change !== null ? (item.shares_change > 0 ? '+' : '') + (item.shares_change / 10000).toFixed(2) + '万' : '--' // 场内新增份额
+      shares: item.shares !== null ? item.shares : '--', // 场内份额
+      shares_change: item.shares_change !== null ? (item.shares_change > 0 ? '+' : '') + item.shares_change : '--' // 场内新增
     }))
 
     return {
