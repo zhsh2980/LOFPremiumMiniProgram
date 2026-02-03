@@ -69,5 +69,23 @@ Page({
                 error: err.message || '网络错误，请重试'
             })
         })
+    },
+
+    // 分享给朋友
+    onShareAppMessage: function () {
+        return {
+            title: 'LOF溢价监控 - 实时查看LOF基金溢价率',
+            path: '/pages/index/index',
+            imageUrl: '' // 可选：自定义分享图片，留空则使用页面截图
+        }
+    },
+
+    // 分享到朋友圈（可选）
+    onShareTimeline: function () {
+        return {
+            title: 'LOF溢价监控',
+            query: '',
+            imageUrl: '' // 可选：自定义分享图片
+        }
     }
 })

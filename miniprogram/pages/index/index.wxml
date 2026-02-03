@@ -73,10 +73,7 @@
         </view>
       </scroll-view>
 
-      <!-- 更新时间 -->
-      <view class="update-time" wx:if="{{updateTime}}">
-        更新于 {{updateTime}}
-      </view>
+
     </view>
   </scroll-view>
 </view>

@@ -19,7 +19,7 @@
 
 .update-info {
   display: flex;
-  align-items: baseline;
+  align-items: center; /* 改为 center，避免基线对齐导致的奇怪视觉 */
   gap: 8rpx;
 }
 
