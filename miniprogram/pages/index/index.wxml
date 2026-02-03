@@ -178,7 +178,7 @@
           wx:for="{{lofList}}" 
           wx:key="code"
         >
-          <view class="col-price">{{item.price}}</view>
+          <view class="col-price" style="color: {{item.styles.price.color || '#333'}}">{{item.price}}</view>
           <view class="col-change" style="color: {{item.styles.change_pct.color || '#333'}}">
             {{item.change}}
           </view>
@@ -191,11 +191,11 @@
           <view class="col-status">
             <text style="color: {{item.styles.apply_status.color || '#333'}}">{{item.status}}</text>
           </view>
-          <view class="col-nav-date">{{item.nav_date}}</view>
-          <view class="col-nav-date">{{item.valuation_date}}</view>
-          <view class="col-amount">{{item.volume}}</view>
-          <view class="col-shares">{{item.shares}}</view>
-          <view class="col-shares-change">{{item.shares_change}}</view>
+          <view class="col-nav-date" style="color: {{item.styles.nav_date.color || '#999'}}">{{item.nav_date}}</view>
+          <view class="col-nav-date" style="color: {{item.styles.valuation_date.color || '#999'}}">{{item.valuation_date}}</view>
+          <view class="col-amount" style="color: {{item.styles.volume.color || '#333'}}">{{item.volume}}</view>
+          <view class="col-shares" style="color: {{item.styles.shares.color || '#333'}}">{{item.shares}}</view>
+          <view class="col-shares-change" style="color: {{item.styles.shares_change.color || '#333'}}">{{item.shares_change}}</view>
         </view>
       </scroll-view>
     </view>
