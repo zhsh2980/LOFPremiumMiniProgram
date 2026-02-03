@@ -138,11 +138,11 @@
 
 /* 表格主体（纵向滚动） */
 .table-body {
-  flex: 1;
   background: #fff;
-  height: 100%;
   white-space: normal;
-  padding-bottom: 40rpx; /* 添加底部内边距，防止最后一行被截断 */
+  /* 关键：明确高度 = 视口高度 - 筛选栏(90rpx) - 表头(60rpx) - 安全边距 */
+  height: calc(100vh - 150rpx);
+  padding-bottom: 20rpx; /* 底部留白 */
 }
 
 /* 数据行 */
