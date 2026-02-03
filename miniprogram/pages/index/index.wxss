@@ -122,6 +122,7 @@
 /* 数据行 */
 .table-row {
   display: flex;
+  align-items: center; /* 确保所有子元素垂直居中 */
   border-bottom: 1rpx solid #f0f0f0;
   min-height: 100rpx;
   background: #fff;
@@ -179,8 +180,9 @@
   padding: 12rpx;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* 纵向居中 */
   align-items: center; /* 水平居中 */
+  min-height: 100rpx; /* 最小高度 */
 }
 
 .fund-name {

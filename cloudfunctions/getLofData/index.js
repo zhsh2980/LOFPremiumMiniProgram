@@ -74,7 +74,7 @@ exports.main = async (event, context) => {
       amount: item.amount !== null ? item.amount : '--', // 成交额
       nav_date: item.nav_date || '--', // 净值日期
       shares: item.shares !== null ? item.shares : '--', // 场内份额
-      shares_change: item.shares_change !== null ? (item.shares_change > 0 ? '+' : '') + item.shares_change : '--' // 场内新增
+      shares_change: item.shares_change !== null ? item.shares_change : '--' // 场内新增（负数自动带-号）
     }))
 
     return {
