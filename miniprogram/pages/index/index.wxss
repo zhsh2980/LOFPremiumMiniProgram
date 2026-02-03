@@ -250,6 +250,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 22rpx; /* 表格内容字体设小 */
+}
+
+/* 表头保持默认或稍大 */
+.table-header .col-status {
+  font-size: 24rpx;
 }
 
 .col-price {
