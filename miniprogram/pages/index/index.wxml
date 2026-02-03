@@ -183,7 +183,7 @@
             {{item.change}}
           </view>
           <view class="col-premium" style="color: {{item.styles.premium_rate_t1.color || '#333'}}">
-            {{item.premium_rate_t1}}
+            {{item.t1_valuation}}
           </view>
           <view class="col-premium" style="color: {{item.styles.rt_premium_rate.color || '#333'}}">
             {{item.rt_premium_rate}}

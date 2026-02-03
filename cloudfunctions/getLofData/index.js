@@ -107,6 +107,7 @@ async function getQdiiCommodity() {
   const result = response.data.data
 
   // 格式化数据 - QDII 商品
+  // 注意：API字段名与实际内容不匹配，需要特殊处理
   const items = result.items.map(item => {
     // 确保 styles 有完整的默认结构
     const defaultStyles = {
@@ -122,11 +123,12 @@ async function getQdiiCommodity() {
       name: cleanFundName(item.fund_name),
       price: item.price || '--',
       change: item.change_pct || '--',
-      premium_rate_t1: item.premium_rate_t1 || '--',
-      rt_premium_rate: item.rt_premium_rate || '--',
+      // 注意：字段名与实际内容的映射关系
+      t1_valuation: item.premium_rate_t1 || '--',      // T-1估值（API字段名是premium_rate_t1但实际是估值）
+      t1_premium_rate: item.rt_premium_rate || '--',   // T-1溢价率（API字段名是rt_premium_rate）
       status: item.apply_status || '--',
-      nav_date: item.nav_date || '--',
-      valuation_date: item.valuation_date || '--',
+      nav_date: item.nav_date || item.nav_t2 || '--',  // 净值日期
+      valuation_date: item.valuation_t1 || '--',       // 估值日期（实际是日期）
       volume: item.volume || '--',
       shares: item.shares || '--',
       shares_change: item.shares_change || '--',
