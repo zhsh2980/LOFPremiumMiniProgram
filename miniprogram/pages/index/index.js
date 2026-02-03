@@ -5,7 +5,8 @@ Page({
         updateTime: '',
         currentFilter: 'limited',
         loading: true,
-        error: null
+        error: null,
+        scrollTop: 0
     },
 
     onLoad: function () {
@@ -30,6 +31,20 @@ Page({
             error: null
         })
         this.fetchData()
+    },
+
+    // 左侧滚动触发
+    onLeftScroll: function (e) {
+        this.setData({
+            scrollTop: e.detail.scrollTop
+        })
+    },
+
+    // 右侧滚动触发
+    onRightScroll: function (e) {
+        this.setData({
+            scrollTop: e.detail.scrollTop
+        })
     },
 
     // 获取数据

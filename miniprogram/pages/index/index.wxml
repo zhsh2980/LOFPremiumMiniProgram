@@ -33,23 +33,22 @@
   </view>
 
   <!-- 数据表格 -->
-  <scroll-view class="table-container" scroll-x="{{true}}" wx:else>
-    <view class="table-wrapper">
+  <view class="table-container" wx:else>
+    <!-- 左侧固定列 -->
+    <view class="fixed-left">
       <!-- 表头 -->
       <view class="table-header">
         <view class="col-name">名称</view>
-        <view class="col-premium">溢价率</view>
-        <view class="col-status">状态</view>
-        <view class="col-price">现价</view>
-        <view class="col-change">涨幅</view>
-        <view class="col-amount">成交额</view>
-        <view class="col-nav-date">净值日期</view>
-        <view class="col-shares">场内份额</view>
-        <view class="col-shares-change">场内新增</view>
       </view>
-
-      <!-- 表格主体（纵向滚动） -->
-      <scroll-view class="table-body" scroll-y enhanced show-scrollbar="{{false}}">
+      <!-- 数据 -->
+      <scroll-view 
+        class="fixed-body" 
+        scroll-y 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        bindscroll="onLeftScroll"
+      >
         <view 
           class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
           wx:for="{{lofList}}" 
@@ -59,6 +58,40 @@
             <view class="fund-name">{{item.name}}</view>
             <view class="fund-code">{{item.code}}</view>
           </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 右侧可滚动列 -->
+    <view class="scroll-right">
+      <!-- 表头 -->
+      <scroll-view class="table-header" scroll-x enhanced show-scrollbar="{{false}}">
+        <view class="header-content">
+          <view class="col-premium">溢价率</view>
+          <view class="col-status">状态</view>
+          <view class="col-price">现价</view>
+          <view class="col-change">涨幅</view>
+          <view class="col-amount">成交额</view>
+          <view class="col-nav-date">净值日期</view>
+          <view class="col-shares">场内份额</view>
+          <view class="col-shares-change">场内新增</view>
+        </view>
+      </scroll-view>
+      <!-- 数据 -->
+      <scroll-view 
+        class="scroll-body" 
+        scroll-y 
+        scroll-x
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-top="{{scrollTop}}"
+        bindscroll="onRightScroll"
+      >
+        <view 
+          class="table-row {{index % 2 === 1 ? 'row-alt' : ''}}" 
+          wx:for="{{lofList}}" 
+          wx:key="code"
+        >
           <view class="col-premium {{item.premium_val >= 0 ? 'text-red' : 'text-green'}}">
             {{item.premium_rate}}
           </view>
@@ -80,8 +113,6 @@
           <view class="col-shares-change">{{item.shares_change}}</view>
         </view>
       </scroll-view>
-
-
     </view>
-  </scroll-view>
+  </view>
 </view>
