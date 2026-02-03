@@ -65,8 +65,9 @@ async function getLofArbitrage(status) {
       code: item.fund_code,
       name: cleanFundName(item.fund_name),
       price: item.price !== null ? item.price : '--',
-      premium_rate: item.premium_rate !== null ? item.premium_rate : '--',
-      change: item.change_pct !== null ? item.change_pct : '--',
+      // LOF 套利接口返回的是数字，为了统一展示，添加 % 后缀
+      premium_rate: item.premium_rate !== null ? (item.premium_rate + '%') : '--',
+      change: item.change_pct !== null ? (item.change_pct + '%') : '--',
       status: item.apply_status,
       limit: item.apply_limit || '',
       amount: item.amount !== null ? item.amount : '--',
