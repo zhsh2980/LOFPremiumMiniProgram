@@ -52,25 +52,34 @@ async function getLofArbitrage(status) {
   const result = response.data.data
 
   // 格式化数据
-  const items = result.items.map(item => ({
-    code: item.fund_code,
-    name: cleanFundName(item.fund_name),
-    price: item.price !== null ? item.price.toFixed(3) : '--',
-    premium_rate: item.premium_rate !== null
-      ? (item.premium_rate > 0 ? '+' : '') + item.premium_rate.toFixed(2) + '%'
-      : '--',
-    change: item.change_pct !== null
-      ? (item.change_pct > 0 ? '+' : '') + item.change_pct.toFixed(2) + '%'
-      : '--',
-    status: item.apply_status,
-    limit: item.apply_limit || '',
-    amount: item.amount !== null ? item.amount : '--',
-    nav_date: item.nav_date || '--',
-    shares: item.shares !== null ? item.shares : '--',
-    shares_change: item.shares_change !== null ? item.shares_change : '--',
-    // 样式信息
-    styles: item.styles || {}
-  }))
+  const items = result.items.map(item => {
+    // 确保 styles 有完整的默认结构
+    const defaultStyles = {
+      change_pct: { color: '#333' },
+      premium_rate: { color: '#333' },
+      apply_status: { color: '#333' }
+    }
+    const styles = { ...defaultStyles, ...item.styles }
+
+    return {
+      code: item.fund_code,
+      name: cleanFundName(item.fund_name),
+      price: item.price !== null ? item.price.toFixed(3) : '--',
+      premium_rate: item.premium_rate !== null
+        ? (item.premium_rate > 0 ? '+' : '') + item.premium_rate.toFixed(2) + '%'
+        : '--',
+      change: item.change_pct !== null
+        ? (item.change_pct > 0 ? '+' : '') + item.change_pct.toFixed(2) + '%'
+        : '--',
+      status: item.apply_status,
+      limit: item.apply_limit || '',
+      amount: item.amount !== null ? item.amount : '--',
+      nav_date: item.nav_date || '--',
+      shares: item.shares !== null ? item.shares : '--',
+      shares_change: item.shares_change !== null ? item.shares_change : '--',
+      styles: styles
+    }
+  })
 
   return {
     update_time: result.update_time,
@@ -98,22 +107,32 @@ async function getQdiiCommodity() {
   const result = response.data.data
 
   // 格式化数据 - QDII 商品
-  const items = result.items.map(item => ({
-    code: item.fund_code,
-    name: cleanFundName(item.fund_name),
-    price: item.price || '--',
-    change: item.change_pct || '--',
-    premium_rate_t1: item.premium_rate_t1 || '--',
-    rt_premium_rate: item.rt_premium_rate || '--',
-    status: item.apply_status || '--',
-    nav_date: item.nav_date || '--',
-    valuation_date: item.valuation_date || '--',
-    volume: item.volume || '--',
-    shares: item.shares || '--',
-    shares_change: item.shares_change || '--',
-    // 样式信息
-    styles: item.styles || {}
-  }))
+  const items = result.items.map(item => {
+    // 确保 styles 有完整的默认结构
+    const defaultStyles = {
+      change_pct: { color: '#333' },
+      premium_rate_t1: { color: '#333' },
+      rt_premium_rate: { color: '#333' },
+      apply_status: { color: '#333' }
+    }
+    const styles = { ...defaultStyles, ...item.styles }
+
+    return {
+      code: item.fund_code,
+      name: cleanFundName(item.fund_name),
+      price: item.price || '--',
+      change: item.change_pct || '--',
+      premium_rate_t1: item.premium_rate_t1 || '--',
+      rt_premium_rate: item.rt_premium_rate || '--',
+      status: item.apply_status || '--',
+      nav_date: item.nav_date || '--',
+      valuation_date: item.valuation_date || '--',
+      volume: item.volume || '--',
+      shares: item.shares || '--',
+      shares_change: item.shares_change || '--',
+      styles: styles
+    }
+  })
 
   return {
     update_time: result.update_time,
@@ -141,23 +160,33 @@ async function getIndexLof() {
   const result = response.data.data
 
   // 格式化数据 - 指数 LOF
-  const items = result.items.map(item => ({
-    code: item.fund_code,
-    name: cleanFundName(item.fund_name),
-    price: item.price || '--',
-    change: item.change_pct || '--',
-    premium_rate: item.premium_rate || '--',
-    index_change: item.index_change_pct || '--',
-    rt_valuation: item.rt_valuation || '--',
-    status: item.apply_status || '--',
-    nav: item.nav || '--',
-    nav_date: item.nav_date || '--',
-    volume: item.volume || '--',
-    shares: item.shares || '--',
-    shares_change: item.shares_change || '--',
-    // 样式信息
-    styles: item.styles || {}
-  }))
+  const items = result.items.map(item => {
+    // 确保 styles 有完整的默认结构
+    const defaultStyles = {
+      change_pct: { color: '#333' },
+      premium_rate: { color: '#333' },
+      index_change_pct: { color: '#333' },
+      apply_status: { color: '#333' }
+    }
+    const styles = { ...defaultStyles, ...item.styles }
+
+    return {
+      code: item.fund_code,
+      name: cleanFundName(item.fund_name),
+      price: item.price || '--',
+      change: item.change_pct || '--',
+      premium_rate: item.premium_rate || '--',
+      index_change: item.index_change_pct || '--',
+      rt_valuation: item.rt_valuation || '--',
+      status: item.apply_status || '--',
+      nav: item.nav || '--',
+      nav_date: item.nav_date || '--',
+      volume: item.volume || '--',
+      shares: item.shares || '--',
+      shares_change: item.shares_change || '--',
+      styles: styles
+    }
+  })
 
   return {
     update_time: result.update_time,

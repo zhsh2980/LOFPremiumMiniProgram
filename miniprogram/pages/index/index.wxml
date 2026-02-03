@@ -153,8 +153,8 @@
         <view class="header-content">
           <view class="col-price">现价</view>
           <view class="col-change">涨幅</view>
-          <view class="col-premium">T-1溢价</view>
-          <view class="col-premium">实时溢价</view>
+          <view class="col-premium">T-1溢价率</view>
+          <view class="col-premium">实时溢价率</view>
           <view class="col-status">申购状态</view>
           <view class="col-nav-date">净值日期</view>
           <view class="col-nav-date">估值日期</view>
