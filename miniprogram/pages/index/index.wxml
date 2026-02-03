@@ -65,7 +65,13 @@
     <!-- 右侧可滚动列 -->
     <view class="scroll-right">
       <!-- 表头 -->
-      <scroll-view class="table-header" scroll-x enhanced show-scrollbar="{{false}}">
+      <scroll-view 
+        class="table-header" 
+        scroll-x 
+        enhanced 
+        show-scrollbar="{{false}}"
+        scroll-left="{{scrollLeft}}"
+      >
         <view class="header-content">
           <view class="col-premium">溢价率</view>
           <view class="col-status">状态</view>
@@ -85,6 +91,7 @@
         enhanced 
         show-scrollbar="{{false}}"
         scroll-top="{{scrollTop}}"
+        scroll-left="{{scrollLeft}}"
         bindscroll="onRightScroll"
       >
         <view 

@@ -6,7 +6,8 @@ Page({
         currentFilter: 'limited',
         loading: true,
         error: null,
-        scrollTop: 0
+        scrollTop: 0,
+        scrollLeft: 0
     },
 
     onLoad: function () {
@@ -40,10 +41,11 @@ Page({
         })
     },
 
-    // 右侧滚动触发
+    // 右侧滚动触发（同时处理纵向和横向）
     onRightScroll: function (e) {
         this.setData({
-            scrollTop: e.detail.scrollTop
+            scrollTop: e.detail.scrollTop,
+            scrollLeft: e.detail.scrollLeft
         })
     },
 
