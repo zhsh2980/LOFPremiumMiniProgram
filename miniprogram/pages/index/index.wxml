@@ -63,7 +63,7 @@
               class="status-tag {{item.status === 'limited' ? 'tag-limited' : (item.status === 'suspended' ? 'tag-suspended' : '')}}"
               wx:if="{{item.status !== 'open'}}"
             >
-              {{item.status === 'limited' ? '限额' : '暂停'}}
+              {{item.status === 'limited' ? item.limit : '暂停'}}
             </view>
           </view>
           <view class="col-price">{{item.price}}</view>

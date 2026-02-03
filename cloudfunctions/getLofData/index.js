@@ -68,7 +68,8 @@ exports.main = async (event, context) => {
         : '--',
       change_val: item.change_pct, // 用于前端判断颜色
       // 状态标签
-      status: item.apply_status
+      status: item.apply_status,
+      limit: item.apply_limit || '' // 限额信息，如"限10"、"限100"
     }))
 
     return {
