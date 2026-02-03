@@ -104,7 +104,7 @@
 }
 
 .fixed-left .col-name {
-  padding: 12rpx;
+  padding: 0; /* 移除padding，与右侧保持一致 */
   min-height: 100rpx;
 }
 
@@ -207,7 +207,7 @@
 .col-name {
   width: 200rpx;
   min-width: 200rpx;
-  padding: 12rpx;
+  padding: 0; /* 移除padding，避免高度不一致 */
   display: flex;
   flex-direction: column;
   justify-content: center; /* 纵向居中 */
