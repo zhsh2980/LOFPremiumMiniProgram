@@ -69,7 +69,12 @@ exports.main = async (event, context) => {
       change_val: item.change_pct, // 用于前端判断颜色
       // 状态标签
       status: item.apply_status,
-      limit: item.apply_limit || '' // 限额信息，如"限10"、"限100"
+      limit: item.apply_limit || '', // 限额信息，如"限10"、"限100"
+      // 新增字段
+      amount: item.amount !== null ? (item.amount / 10000).toFixed(2) + '万' : '--', // 成交额，转换为万元
+      nav_date: item.nav_date || '--', // 净值日期
+      shares: item.shares !== null ? (item.shares / 10000).toFixed(2) + '万' : '--', // 场内份额，转换为万份
+      shares_change: item.shares_change !== null ? (item.shares_change > 0 ? '+' : '') + (item.shares_change / 10000).toFixed(2) + '万' : '--' // 场内新增份额
     }))
 
     return {

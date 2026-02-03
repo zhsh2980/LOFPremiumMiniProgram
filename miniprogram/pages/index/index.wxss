@@ -229,6 +229,54 @@
   font-size: 26rpx;
 }
 
+.col-amount {
+  width: 140rpx;
+  min-width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.col-nav-date {
+  width: 140rpx;
+  min-width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.col-shares {
+  width: 140rpx;
+  min-width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.col-shares-change {
+  width: 140rpx;
+  min-width: 140rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+
 /* 状态标签 */
 .status-tag {
   padding: 4rpx 12rpx;

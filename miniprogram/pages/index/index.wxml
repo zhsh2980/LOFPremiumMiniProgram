@@ -42,6 +42,10 @@
         <view class="col-status">状态</view>
         <view class="col-price">现价</view>
         <view class="col-change">涨幅</view>
+        <view class="col-amount">成交额</view>
+        <view class="col-nav-date">净值日期</view>
+        <view class="col-shares">场内份额</view>
+        <view class="col-shares-change">场内新增</view>
       </view>
 
       <!-- 表格主体（纵向滚动） -->
@@ -70,6 +74,10 @@
           <view class="col-change {{item.change_val >= 0 ? 'text-red' : 'text-green'}}">
             {{item.change}}
           </view>
+          <view class="col-amount">{{item.amount}}</view>
+          <view class="col-nav-date">{{item.nav_date}}</view>
+          <view class="col-shares">{{item.shares}}</view>
+          <view class="col-shares-change">{{item.shares_change}}</view>
         </view>
       </scroll-view>
 
